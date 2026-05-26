@@ -13,6 +13,7 @@ struct Medicamento{
     string laboratorio;
 
 };
+cout<<"teste"<endl;
 
 int main(){	
     ifstream arquivo_medicamentos("medicamentos.csv");
