@@ -1,6 +1,102 @@
-#id,nome_comercial,principio_ativo,dosagem,laboratorio
-4
-1,Dipirona,sla,0.5,als
-2,Paracetamol,coisa,0.25,asioc
-3,Guaratatina,blabla,1.0,albalb
-4,Par,jhff,0.8,lab
+#id,nome_comercial,principio_ativo,dosagem(mg),laboratorio
+100,,,,
+1,Aspirina,Ácido acetilsalicílico,500,Bayer
+2,Aspirina Prevent,Ácido acetilsalicílico,100,Bayer
+3,Tylenol,Paracetamol,750,Johnson & Johnson
+4,Novalgina,Dipirona sódica,1000,Sanofi
+5,Buscopan,Escopolamina,10,Opella
+6,Ponstan,Ácido mefenâmico,500,Pfizer
+7,Advil,Ibuprofeno,400,Haleon
+8,Alivium,Ibuprofeno,600,Mantecorp
+9,Nimesulida EMS,Nimesulida,100,EMS
+10,Cataflam,Diclofenaco potássico,50,Novartis
+11,Profenid,Cetoprofeno,100,Sanofi
+12,Celebra,Celecoxibe,200,Pfizer
+13,Arcoxia,Etoricoxibe,90,MSD
+14,Amoxil,Amoxicilina,500,GSK
+15,Zinnat,Cefuroxima,500,GSK
+16,Keflex,Cefalexina,500,Eurofarma
+17,Zitromax,Azitromicina,500,Pfizer
+18,Flagyl,Metronidazol,400,Sanofi
+19,Fluconazol Medley,Fluconazol,150,Sanofi Medley
+20,Zovirax,Aciclovir,200,GSK
+21,Tamiflu,Oseltamivir,75,Roche
+22,Losartan Neo Química,Losartana potássica,50,Neo Química
+23,Cozaar,Losartana potássica,50,MSD
+24,Aradois,Losartana potássica,50,Biolab
+25,Renitec,Enalapril,20,MSD
+26,Capoten,Captopril,25,Bristol Myers Squibb
+27,Norvasc,Anlodipino,5,Pfizer
+28,Selozok,Metoprolol,50,AstraZeneca
+29,Atenol,Atenolol,50,Aché
+30,Diovan,Valsartana,160,Novartis
+31,Micardis,Telmisartana,80,Boehringer Ingelheim
+32,Monocordil,Isossorbida,20,Baldacci
+33,Marevan,Varfarina,5,FQM
+34,Xarelto,Rivaroxabana,20,Bayer
+35,Eliquis,Apixabana,5,Bristol Myers Squibb
+36,Plavix,Clopidogrel,75,Sanofi
+37,Lipitor,Atorvastatina,20,Pfizer
+38,Zocor,Sinvastatina,20,MSD
+39,Crestor,Rosuvastatina,20,AstraZeneca
+40,Glifage XR,Metformina,500,Merck
+41,Forxiga,Dapagliflozina,10,AstraZeneca
+42,Jardiance,Empagliflozina,25,Boehringer Ingelheim
+43,Januvia,Sitagliptina,100,MSD
+44,Galvus,Vildagliptina,50,Novartis
+45,Ozempic,Semaglutida,1,Novo Nordisk
+46,Rybelsus,Semaglutida,14,Novo Nordisk
+47,Victoza,Liraglutida,1.8,Novo Nordisk
+48,Tapazol,Tiamazol,10,Biolab
+49,Omeprazol Medley,Omeprazol,20,Sanofi Medley
+50,Losec,Omeprazol,20,AstraZeneca
+51,Pantocal,Pantoprazol,40,Takeda
+52,Nexium,Esomeprazol,40,AstraZeneca
+53,Digesan,Bromoprida,10,Aché
+54,Motilium,Domperidona,10,Janssen
+55,Plasil,Metoclopramida,10,Sanofi
+56,Luftal,Simeticona,40,Reckitt
+57,Floratil,Saccharomyces boulardii,200,Biocodex
+58,Allegra,Fexofenadina,180,Opella
+59,Claritin,Loratadina,10,Bayer
+60,Zyrtec,Cetirizina,10,UCB
+61,Desalex,Desloratadina,5,Mantecorp
+62,Hixizine,Hidroxizina,25,UCB
+63,Rivotril,Clonazepam,2,Roche
+64,Frontal,Alprazolam,1,Pfizer
+65,Lexotan,Bromazepam,6,Roche
+66,Stilnox,Zolpidem,10,Sanofi
+67,Donaren,Trazodona,150,Apsen
+68,Prozac,Fluoxetina,20,Eli Lilly
+69,Zoloft,Sertralina,50,Pfizer
+70,Lexapro,Escitalopram,10,Lundbeck
+71,Cymbalta,Duloxetina,60,Eli Lilly
+72,Effexor XR,Venlafaxina,75,Pfizer
+73,Pamelor,Nortriptilina,25,Eurofarma
+74,Anafranil,Clomipramina,25,Novartis
+75,Leponex,Clozapina,100,Novartis
+76,Risperdal,Risperidona,2,Janssen
+77,Seroquel,Quetiapina,100,AstraZeneca
+78,Zyprexa,Olanzapina,10,Eli Lilly
+79,Venvanse,Lisdexanfetamina,70,Takeda
+80,Concerta,Metilfenidato,36,Janssen
+81,Tegretol,Carbamazepina,200,Novartis
+82,Depakene,Ácido valproico,500,Abbott
+83,Keppra,Levetiracetam,500,UCB
+84,Lamictal,Lamotrigina,100,GSK
+85,Fosamax,Alendronato de sódio,70,MSD
+86,Neutrofer,Ferro quelato glicinato,500,Biolab
+87,Roacutan,Isotretinoína,20,Roche
+88,Miosan,Ciclobenzaprina,10,Apsen
+89,Feldene,Piroxicam,20,Pfizer
+90,Naprosyn,Naproxeno,500,Roche
+91,Coltrax,Tiocolquicosídeo,4,Apsen
+92,Daktarin,Miconazol,250,Janssen
+93,Nizoral,Cetoconazol,200,Janssen
+94,Levaquin,Levofloxacino,500,Janssen
+95,Cipro,Ciprofloxacino,500,Bayer
+96,Amaryl,Glimepirida,4,Sanofi
+97,Diamicron,Gliclazida,60,Servier
+98,Actos,Pioglitazona,30,Takeda
+99,Sustrate,Propatilnitrato,10,FQM
+100,Eutropin,Somatropina,4,LG Life Sciences
