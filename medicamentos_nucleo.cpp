@@ -26,45 +26,78 @@ void Ler_Medicamento(Medicamento medicamento){
 
 }
 
+void Receber_Valor(Medicamento *destino, Medicamento &origem){
+
+  destino->id = origem.id;
+  destino->nome_comercial = origem.nome_comercial;
+  destino->principio_ativo = origem.principio_ativo;
+  destino->dosagem = origem.dosagem;
+  destino->laboratorio = origem.laboratorio;
+  destino->mostrar = origem.mostrar;
+
+}
+  
+
 int main(){
     
-    int capacidade;
-
     ifstream arquivo_medicamentos("medicamentos.csv");
 
     if (!arquivo_medicamentos){
       cout << "Não foi possível abrir o arquivo" << endl;
     }
     else{
+
       char letra;
       string linha;
 
-      int num_registros = 0;
+      int capacidade = 35;
+      int tamanho = 0;
+
 
       getline(arquivo_medicamentos, linha);
-      arquivo_medicamentos >> num_registros;
-      capacidade = num_registros;
-      arquivo_medicamentos.ignore();
       
-      Medicamento vet_medicamentos[num_registros];
-
-      for(int i=0; i<num_registros; i++){
+      Medicamento *vet_medicamentos = new Medicamento[capacidade];
       
-        arquivo_medicamentos >> vet_medicamentos[i].id;
-        
-        arquivo_medicamentos >> letra;
+      int j = 0;
 
-        getline(arquivo_medicamentos, vet_medicamentos[i].nome_comercial, ',');
+      while(arquivo_medicamentos >> vet_medicamentos[j].id){
+        arquivo_medicamentos >> letra >> letra;
 
-        getline(arquivo_medicamentos, vet_medicamentos[i].principio_ativo, ',');
+        getline(arquivo_medicamentos, vet_medicamentos[j].nome_comercial, '"');
 
-        arquivo_medicamentos >> vet_medicamentos[i].dosagem;
+        arquivo_medicamentos >> letra >> letra;
+
+        getline(arquivo_medicamentos, vet_medicamentos[j].principio_ativo, '"');
 
         arquivo_medicamentos >> letra;
 
-        getline(arquivo_medicamentos, vet_medicamentos[i].laboratorio);
-        
-        vet_medicamentos[i].mostrar = true;
+        arquivo_medicamentos >> vet_medicamentos[j].dosagem;
+
+        arquivo_medicamentos >> letra >> letra;
+
+        getline(arquivo_medicamentos, vet_medicamentos[j].laboratorio, '"');
+
+        vet_medicamentos[j].mostrar = true;
+
+        j++;
+        tamanho++;
+
+        if (tamanho >= capacidade){
+          capacidade += 5;
+
+          Medicamento *vet_temp = new Medicamento[capacidade];
+
+          for(int i=0; i<(capacidade-5); i++){
+
+            Receber_Valor(&vet_temp[i], vet_medicamentos[i]);
+
+          }
+
+          delete []vet_medicamentos; 
+          vet_medicamentos = vet_temp;
+
+        }
+
       }
 
       int opcao = 0;
@@ -101,15 +134,15 @@ int main(){
 
               do {
                 cout << "Insira o começo do intervalo de medicamentos que deseja ver." << endl
-                     << "O número inserido deve estar entre 1 e " << capacidade << ": ";
+                     << "O número inserido deve estar entre 1 e " << tamanho << ": ";
                 cin >> inicio;
-              }while (inicio <= 0 || inicio > capacidade);
+              }while (inicio <= 0 || inicio > tamanho);
 
               do {
                 cout << "Insira o fim do intervalo de medicamentos que deseja ver." << endl 
-                     << "O número inserido deve estar entre " << inicio << " e " << capacidade << ": "; 
+                     << "O número inserido deve estar entre " << inicio << " e " << tamanho << ": "; 
                 cin >> fim;
-              }while (fim < inicio || fim > capacidade);
+              }while (fim < inicio || fim > tamanho);
               
               int k = 0;
               for(int i=0; i < fim; i++){
@@ -156,6 +189,8 @@ int main(){
 
 
       }while(opcao != 6);
+
+      delete []vet_medicamentos;
 
     } 
     arquivo_medicamentos.close();
