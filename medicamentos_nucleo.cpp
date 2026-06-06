@@ -26,7 +26,30 @@ void Ler_Medicamento(Medicamento medicamento){
 
 }
 
-void Receber_Valor(Medicamento *destino, Medicamento &origem){
+void Receber_Medicamento(Medicamento &medicamento){
+  
+  medicamento.mostrar = true;
+  
+  cout << "Insira o id do remédio: ";
+  cin >> medicamento.id;
+
+  cin.ignore();
+  cout << "Insira o nome comercial do medicamento: ";
+  getline(cin, medicamento.nome_comercial);
+
+  cout << "Insira o principio ativo do medicamento: ";
+  getline(cin, medicamento.principio_ativo);
+
+  cout << "Insira a dosagem do medicamento: ";
+  cin >> medicamento.dosagem;
+  cin.ignore();
+
+  cout << "Insira o laboratorio do medicamento: ";
+  getline(cin, medicamento.laboratorio);
+
+}
+
+void Copiar_Medicamento(Medicamento *destino, Medicamento &origem){
 
   destino->id = origem.id;
   destino->nome_comercial = origem.nome_comercial;
@@ -89,7 +112,7 @@ int main(){
 
           for(int i=0; i<(capacidade-5); i++){
 
-            Receber_Valor(&vet_temp[i], vet_medicamentos[i]);
+            Copiar_Medicamento(&vet_temp[i], vet_medicamentos[i]);
 
           }
 
@@ -116,9 +139,33 @@ int main(){
         cin >> opcao;
 
         switch(opcao){
-          case 1:
-            cout << "Opção em desenvolvimento" << endl;
-            break;
+          case 1:{
+            
+            Receber_Medicamento(vet_medicamentos[j]);
+
+            j++;
+            tamanho++;
+
+            if (tamanho >= capacidade){
+              capacidade += 5;
+
+              Medicamento *vet_temp = new Medicamento[capacidade];
+
+              for(int i=0; i<(capacidade-5); i++){
+
+                Copiar_Medicamento(&vet_temp[i], vet_medicamentos[i]);
+
+              }
+
+              delete []vet_medicamentos; 
+              vet_medicamentos = vet_temp;
+
+            }
+
+            cout << "Medicamento inserido com sucesso!" << endl;
+            cout << endl;
+
+          }break;
 
           case 2:
             cout << "Opção em desenvolvimento" << endl;
@@ -161,8 +208,7 @@ int main(){
 
               }
 
-            }
-            break;
+          }break;
           
           case 5:
             cout << "Opção em desenvolvimento" << endl;
