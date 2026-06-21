@@ -18,18 +18,62 @@ struct Medicamento{
 
 void Ler_Medicamento(Medicamento medicamento){
 
-    cout << "Id: " << medicamento.id << endl; 
-    cout << "Nome Comercial: " << medicamento.nome_comercial << endl; 
-    cout << "Principio Ativo: " << medicamento.principio_ativo << endl; 
-    cout << "Dosagem: " << medicamento.dosagem << " mg"<<  endl; 
-    cout << "Laboratorio: " << medicamento.laboratorio << endl; 
+    cout << "Id: " << medicamento.id << endl;
+    cout << "Nome Comercial: " << medicamento.nome_comercial << endl;
+    cout << "Principio Ativo: " << medicamento.principio_ativo << endl;
+    cout << "Dosagem: " << medicamento.dosagem << " mg"<<  endl;
+    cout << "Laboratorio: " << medicamento.laboratorio << endl;
 
+}
+void Ordena(Medicamento *ptVetMedicamento, int capac, int opcOrdena){
+    for(int i=1; i<capac; i++){
+        Medicamento valor_pivo = ptVetMedicamento[i];
+        int j = i-1;
+           if(opcOrdena == 1){
+            while((j>=0) and (valor_pivo.id <ptVetMedicamento[j].id)){
+                ptVetMedicamento[j+1] = ptVetMedicamento[j];
+                j--;
+            }
+                ptVetMedicamento[j+1] = valor_pivo;
+        }
+           else if(opcOrdena == 2){
+                  while((j>=0) and (valor_pivo.dosagem <ptVetMedicamento[j].dosagem)){
+                    ptVetMedicamento[j+1] = ptVetMedicamento[j];
+                    j--;
+                }
+        }
+            ptVetMedicamento[j+1] = valor_pivo;
+   }
+}
+int buscaBinaria(Medicamento *ptMedicamentos, int inicio, int fim, int remover){
+    if(inicio > fim){
+        return -1;
+    }
+    int medio = (inicio+fim)/2;
+
+    if(remover == ptMedicamentos[medio].id){
+        return medio;
+    }
+    else if(ptMedicamentos[medio].id < remover){
+        return buscaBinaria(ptMedicamentos, medio+1, fim, remover);
+    }
+    else{
+        return buscaBinaria(ptMedicamentos, 0, medio-1, remover);
+    }
+}
+
+void Remover_Medicamento(Medicamento* ptMedicamento, int tam, int remover){
+    for(int i=0; i < tam; i++){
+        if(remover == ptMedicamento[i].id){
+            ptMedicamento[i].mostrar = false;
+        }
+    }
 }
 
 void Receber_Medicamento(Medicamento &medicamento){
-  
+
   medicamento.mostrar = true;
-  
+
   cout << "Insira o id do remédio: ";
   cin >> medicamento.id;
 
@@ -59,10 +103,10 @@ void Copiar_Medicamento(Medicamento *destino, Medicamento &origem){
   destino->mostrar = origem.mostrar;
 
 }
-  
+
 
 int main(){
-    
+
     ifstream arquivo_medicamentos("medicamentos.csv");
 
     if (!arquivo_medicamentos){
@@ -78,9 +122,9 @@ int main(){
 
 
       getline(arquivo_medicamentos, linha);
-      
+
       Medicamento *vet_medicamentos = new Medicamento[capacidade];
-      
+
       int j = 0;
 
       while(arquivo_medicamentos >> vet_medicamentos[j].id){
@@ -116,7 +160,7 @@ int main(){
 
           }
 
-          delete []vet_medicamentos; 
+          delete []vet_medicamentos;
           vet_medicamentos = vet_temp;
 
         }
@@ -126,21 +170,21 @@ int main(){
       int opcao = 0;
 
       do{
-        
-        cout << "Opcões: " << endl 
-             << "1 - Inserir novo medicamento;" << endl 
+
+        cout << "Opcões: " << endl
+             << "1 - Inserir novo medicamento;" << endl
              << "2 - Remover medicamento;" << endl
              << "3 - Buscar medicamento;" << endl
              << "4 - Mostrar medicamentos;" << endl
              << "5 - Salvar alterações;" << endl
              << "6 - Sair" << endl;
-      
+
         cout << "Insira uma opção:";
         cin >> opcao;
 
         switch(opcao){
           case 1:{
-            
+
             Receber_Medicamento(vet_medicamentos[j]);
 
             j++;
@@ -157,7 +201,7 @@ int main(){
 
               }
 
-              delete []vet_medicamentos; 
+              delete []vet_medicamentos;
               vet_medicamentos = vet_temp;
 
             }
@@ -168,7 +212,35 @@ int main(){
           }break;
 
           case 2:
-            cout << "Opção em desenvolvimento" << endl;
+            int opcOrdena;
+            cout<<"Escolha a forma de ordenar para a busca binaria"<<endl;
+            cout<< "1- Por ID \n" << "2- Por dosagem" <<endl;
+            cin>>opcOrdena;
+
+            while(opcOrdena != 1 and opcOrdena!= 2){
+                cout<<"ENTRADA INVALIDA! DIGITE NOVAMENTE"<<endl;
+                 cin>>opcOrdena;
+            }
+            Ordena(vet_medicamentos, capacidade, opcOrdena);
+
+            int opcRemover, posicaoRemover;
+            if(opcOrdena == 1){
+                cout<< "ID do medicamento a ser removido";
+                cin>>opcRemover;
+
+                posicaoRemover = buscaBinaria(vet_medicamentos, 0, capacidade, opcRemover);
+
+                Remover_Medicamento(vet_medicamentos, capacidade, posicaoRemover);
+
+            }
+            else{
+                cout<< "Dosagem do medicamento a ser removido";
+                cin>>opcRemover;
+
+                 posicaoRemover = buscaBinaria(vet_medicamentos, 0, capacidade, opcRemover);
+
+                 Remover_Medicamento(vet_medicamentos, capacidade, posicaoRemover);
+            }
             break;
 
           case 3:
@@ -186,14 +258,14 @@ int main(){
               }while (inicio <= 0 || inicio > tamanho);
 
               do {
-                cout << "Insira o fim do intervalo de medicamentos que deseja ver." << endl 
-                     << "O número inserido deve estar entre " << inicio << " e " << tamanho << ": "; 
+                cout << "Insira o fim do intervalo de medicamentos que deseja ver." << endl
+                     << "O número inserido deve estar entre " << inicio << " e " << tamanho << ": ";
                 cin >> fim;
               }while (fim < inicio || fim > tamanho);
-              
+
               int k = 0;
               for(int i=0; i < fim; i++){
-                
+
                 if(i >= inicio - 1 && vet_medicamentos[k].mostrar){
                   cout << endl;
                   cout << i+1 << "º Medicamento: " << endl;
@@ -209,7 +281,7 @@ int main(){
               }
 
           }break;
-          
+
           case 5:
             cout << "Opção em desenvolvimento" << endl;
             break;
@@ -238,10 +310,10 @@ int main(){
 
       delete []vet_medicamentos;
 
-    } 
+    }
     arquivo_medicamentos.close();
-    
-    
+
+
 
     return 0;
 }
