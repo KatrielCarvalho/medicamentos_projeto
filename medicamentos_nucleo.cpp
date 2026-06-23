@@ -63,12 +63,12 @@ int buscaBinaria(Medicamento *ptMedicamentos, int inicio, int fim, int remover){
 }
 
 void Remover_Medicamento(Medicamento* ptMedicamento, int tam, int remover){
-    for(int i=0; i < tam; i++){
-        if(remover == ptMedicamento[i].id){
-            ptMedicamento[i].mostrar = false;
-        }
-    }
+
+        ptMedicamento[remover].mostrar = false;
+
 }
+
+
 
 void Receber_Medicamento(Medicamento &medicamento){
 
@@ -226,21 +226,17 @@ int main(){
             int opcRemover, posicaoRemover;
             if(opcOrdena == 1){
                 cout<< "ID do medicamento a ser removido";
+
+            }
+            else{
+                cout<< "Dosagem do medicamento a ser removido";
+            }
                 cin>>opcRemover;
 
                 posicaoRemover = buscaBinaria(vet_medicamentos, 0, capacidade, opcRemover);
 
                 Remover_Medicamento(vet_medicamentos, capacidade, posicaoRemover);
 
-            }
-            else{
-                cout<< "Dosagem do medicamento a ser removido";
-                cin>>opcRemover;
-
-                 posicaoRemover = buscaBinaria(vet_medicamentos, 0, capacidade, opcRemover);
-
-                 Remover_Medicamento(vet_medicamentos, capacidade, posicaoRemover);
-            }
             break;
 
           case 3:
