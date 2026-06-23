@@ -104,6 +104,25 @@ void Copiar_Medicamento(Medicamento *destino, Medicamento &origem){
 
 }
 
+void Salvar_Medicamentos(Medicamento vet_medicamentos[], tamanho){
+  
+  arquivo_medicamentos << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""
+
+            for(int i=0; i<tamanho; i++){
+            if(vet_medicamentos[i].mostrar == true){
+              arquivo_medicamentos << vet_medicamentos[i].id << ','
+              << '"' << vet_medicamentos[i].nome_comercial
+              << '"' << "," << '"' << vet_medicamentos[i].principio_ativo<<'"'
+              <<','<< vet_medicamentos[i].dosagem <<','
+              << '"' << vet_medicamentos[i].laboratorio << '"';
+            }
+
+            }
+
+
+
+}
+
 
 int main(){
 
@@ -279,7 +298,20 @@ int main(){
           }break;
 
           case 5:
-            cout << "Opção em desenvolvimento" << endl;
+            
+            arquivo_medicamentos << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""
+
+            for(int i=0; i<tamanho; i++){
+            if(vet_medicamentos[i].mostrar == true){
+              arquivo_medicamentos << vet_medicamentos[i].id << ','
+              << '"' << vet_medicamentos[i].nome_comercial
+              << '"' << "," << '"' << vet_medicamentos[i].principio_ativo<<'"'
+              <<','<< vet_medicamentos[i].dosagem <<','
+              << '"' << vet_medicamentos[i].laboratorio << '"';
+            }
+
+            }
+
             break;
 
           case 6:
