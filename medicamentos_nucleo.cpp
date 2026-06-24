@@ -1,3 +1,12 @@
+// NOMES:
+// Henrique César Rosa Silva de Paiva;
+// Katriel Felipe Reis Carvalho;
+// Pedro Victor Tavares Duarte.
+//
+// TURMA: 10A 
+//
+// TEMA: Medicamentos
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -66,13 +75,13 @@ void Ler_Medicamento(Medicamento medicamento){
 
 void Salvar_Medicamentos(Medicamento vet_medicamentos[], unsigned tamanho){
 
-  ofstream arquivo_medicamentos_escrever("medicamentos.csv");
-  arquivo_medicamentos_escrever << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""<<endl;
+  ofstream arquivo_medicamentos_saida("medicamentos.csv");
+  arquivo_medicamentos_saida << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""<<endl;
 
   for(unsigned i=0; i<tamanho; i++){
 
     if(vet_medicamentos[i].mostrar == true){
-      arquivo_medicamentos_escrever << vet_medicamentos[i].id << ','
+      arquivo_medicamentos_saida << vet_medicamentos[i].id << ','
         << '"' << vet_medicamentos[i].nome_comercial
         << '"' << "," << '"' << vet_medicamentos[i].principio_ativo<<'"'
         <<','<< vet_medicamentos[i].dosagem <<','
@@ -203,7 +212,7 @@ void Merge_Sort(Medicamento vet_medicamentos[], unsigned inicio, unsigned fim, i
 
 }
 
-int Busca_Binaria_Nome(Medicamento *vet_medicamentos, unsigned inicio, unsigned fim, string valor_buscado){
+int Busca_Binaria_Nome(Medicamento vet_medicamentos[], unsigned inicio, unsigned fim, string valor_buscado){
   if(inicio > fim){
     return -1;
   }
@@ -241,9 +250,9 @@ int Busca_Binaria_Id(Medicamento *vet_medicamentos, unsigned inicio, unsigned fi
 
 int main(){
 
-  ifstream arquivo_medicamentos("medicamentos.csv");
+  ifstream arquivo_medicamentos_entrada("medicamentos.csv");
 
-  if (!arquivo_medicamentos){
+  if (!arquivo_medicamentos_entrada){
     cout << "Não foi possível abrir o arquivo" << endl;
   }
   else{
@@ -255,28 +264,28 @@ int main(){
     unsigned tamanho = 0;
 
 
-    getline(arquivo_medicamentos, linha_lixo);
+    getline(arquivo_medicamentos_entrada, linha_lixo);
 
     Medicamento *vet_medicamentos = new Medicamento[capacidade];
 
     unsigned j = 0;
 
-    while(arquivo_medicamentos >> vet_medicamentos[j].id){
-      arquivo_medicamentos >> letra_lixo >> letra_lixo;
+    while(arquivo_medicamentos_entrada >> vet_medicamentos[j].id){
+      arquivo_medicamentos_entrada >> letra_lixo >> letra_lixo;
 
-      getline(arquivo_medicamentos, vet_medicamentos[j].nome_comercial, '"');
+      getline(arquivo_medicamentos_entrada, vet_medicamentos[j].nome_comercial, '"');
 
-      arquivo_medicamentos >> letra_lixo >> letra_lixo;
+      arquivo_medicamentos_entrada >> letra_lixo >> letra_lixo;
 
-      getline(arquivo_medicamentos, vet_medicamentos[j].principio_ativo, '"');
+      getline(arquivo_medicamentos_entrada, vet_medicamentos[j].principio_ativo, '"');
 
-      arquivo_medicamentos >> letra_lixo;
+      arquivo_medicamentos_entrada >> letra_lixo;
 
-      arquivo_medicamentos >> vet_medicamentos[j].dosagem;
+      arquivo_medicamentos_entrada >> vet_medicamentos[j].dosagem;
 
-      arquivo_medicamentos >> letra_lixo >> letra_lixo;
+      arquivo_medicamentos_entrada >> letra_lixo >> letra_lixo;
 
-      getline(arquivo_medicamentos, vet_medicamentos[j].laboratorio, '"');
+      getline(arquivo_medicamentos_entrada, vet_medicamentos[j].laboratorio, '"');
 
       vet_medicamentos[j].mostrar = true;
 
@@ -286,16 +295,16 @@ int main(){
       if (tamanho >= capacidade){
         capacidade += 5;
 
-        Medicamento *vet_temp = new Medicamento[capacidade];
+        Medicamento *vet_aux = new Medicamento[capacidade];
 
         for(unsigned i=0; i<(capacidade-5); i++){
 
-          Copiar_Medicamento(&vet_temp[i], vet_medicamentos[i]);
+          Copiar_Medicamento(&vet_aux[i], vet_medicamentos[i]);
 
         }
 
         delete []vet_medicamentos;
-        vet_medicamentos = vet_temp;
+        vet_medicamentos = vet_aux;
 
       }
 
@@ -502,7 +511,7 @@ int main(){
     delete []vet_medicamentos;
 
   }
-  arquivo_medicamentos.close();
+  arquivo_medicamentos_entrada.close();
 
 
 
