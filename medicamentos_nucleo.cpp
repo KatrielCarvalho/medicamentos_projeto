@@ -47,9 +47,9 @@ void Copiar_Medicamento(Medicamento *destino, Medicamento &origem){
 
 }
 
-void Remover_Medicamento(Medicamento* ptMedicamento, int tam, int remover){
+void Remover_Medicamento(Medicamento vet_medicamentos[], unsigned remover){
 
-  ptMedicamento[remover].mostrar = false;
+  vet_medicamentos[remover].mostrar = false;
 
 }
 
@@ -64,12 +64,12 @@ void Ler_Medicamento(Medicamento medicamento){
 
 }
 
-void Salvar_Medicamentos(Medicamento vet_medicamentos[], int tamanho){
+void Salvar_Medicamentos(Medicamento vet_medicamentos[], unsigned tamanho){
 
   ofstream arquivo_medicamentos_escrever("medicamentos.csv");
   arquivo_medicamentos_escrever << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""<<endl;
 
-  for(int i=0; i<tamanho; i++){
+  for(unsigned i=0; i<tamanho; i++){
 
     if(vet_medicamentos[i].mostrar == true){
       arquivo_medicamentos_escrever << vet_medicamentos[i].id << ','
@@ -203,7 +203,7 @@ void Merge_Sort(Medicamento vet_medicamentos[], unsigned inicio, unsigned fim, i
 
 }
 
-int Busca_Binaria_Nome(Medicamento *vet_medicamentos, int inicio, int fim, string valor_buscado){
+int Busca_Binaria_Nome(Medicamento *vet_medicamentos, unsigned inicio, unsigned fim, string valor_buscado){
   if(inicio > fim){
     return -1;
   }
@@ -221,12 +221,12 @@ int Busca_Binaria_Nome(Medicamento *vet_medicamentos, int inicio, int fim, strin
   }
 }
 
-int Busca_Binaria_Id(Medicamento *vet_medicamentos, int inicio, int fim, int valor_buscado){
+int Busca_Binaria_Id(Medicamento *vet_medicamentos, unsigned inicio, unsigned fim, unsigned valor_buscado){
   if(inicio > fim){
     return -1;
   }
 
-  int medio = (inicio+fim)/2;
+  unsigned medio = (inicio+fim)/2;
 
   if(valor_buscado == vet_medicamentos[medio].id){
     return medio;
@@ -251,15 +251,15 @@ int main(){
     char letra_lixo;
     string linha_lixo;
 
-    int capacidade = 35;
-    int tamanho = 0;
+    unsigned capacidade = 40;
+    unsigned tamanho = 0;
 
 
     getline(arquivo_medicamentos, linha_lixo);
 
     Medicamento *vet_medicamentos = new Medicamento[capacidade];
 
-    int j = 0;
+    unsigned j = 0;
 
     while(arquivo_medicamentos >> vet_medicamentos[j].id){
       arquivo_medicamentos >> letra_lixo >> letra_lixo;
@@ -288,7 +288,7 @@ int main(){
 
         Medicamento *vet_temp = new Medicamento[capacidade];
 
-        for(int i=0; i<(capacidade-5); i++){
+        for(unsigned i=0; i<(capacidade-5); i++){
 
           Copiar_Medicamento(&vet_temp[i], vet_medicamentos[i]);
 
@@ -338,7 +338,7 @@ int main(){
 
                      Medicamento *vet_temp = new Medicamento[capacidade];
 
-                     for(int i=0; i<(capacidade-5); i++){
+                     for(unsigned i=0; i<(capacidade-5); i++){
 
                        Copiar_Medicamento(&vet_temp[i], vet_medicamentos[i]);
 
@@ -370,11 +370,11 @@ int main(){
 
                  Merge_Sort(vet_medicamentos, 0, tamanho-1, opc_ordena);
 
-                 int posicao_remover;
+                 unsigned posicao_remover;
 
                  if(opc_ordena == 1){
 
-                   int medicamento_remover;
+                   unsigned medicamento_remover;
                    cout<< "ID do medicamento a ser removido: ";
                    cin >> medicamento_remover;
                    posicao_remover = Busca_Binaria_Id(vet_medicamentos, 0, capacidade, medicamento_remover);
@@ -389,7 +389,7 @@ int main(){
                  }
                  if(posicao_remover != -1){
                    tamanho--;
-                   Remover_Medicamento(vet_medicamentos, capacidade, posicao_remover);
+                   Remover_Medicamento(vet_medicamentos, posicao_remover);
                  }else{
                    cout << "Não há nenhum elemento com o parametro no qual você quer deletar"<< endl;
                  }
@@ -410,11 +410,11 @@ int main(){
 
                  Merge_Sort(vet_medicamentos, 0, tamanho-1, opc_ordena);
 
-                 int posicao_procurar;
+                 unsigned posicao_procurar;
 
                  if(opc_ordena == 1){
 
-                   int medicamento_procurar;
+                   unsigned medicamento_procurar;
                    cout<< "ID do medicamento a ser procurado: ";
                    cin >> medicamento_procurar;
                    posicao_procurar = Busca_Binaria_Id(vet_medicamentos, 0, capacidade, medicamento_procurar);
@@ -438,7 +438,7 @@ int main(){
 
         case 4:{
 
-                 int inicio, fim;
+                 unsigned inicio, fim;
 
                  do {
                    cout << "Insira o começo do intervalo de medicamentos que deseja ver." << endl
@@ -452,8 +452,8 @@ int main(){
                    cin >> fim;
                  }while (fim < inicio || fim > tamanho);
 
-                 int k = 0;
-                 for(int i=0; i < fim; i++){
+                 unsigned k = 0;
+                 for(unsigned i=0; i < fim; i++){
 
                    if(i >= inicio - 1 && vet_medicamentos[k].mostrar){
                      cout << endl;
