@@ -1,13 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include <ostream>
 #include <string>
 
 using namespace std;
 
 struct Medicamento{
 
-    int id;
+    unsigned id;
     string nome_comercial;
     string principio_ativo;
     float dosagem;
@@ -16,66 +15,10 @@ struct Medicamento{
 
 };
 
-void Ler_Medicamento(Medicamento medicamento){
-
-    cout << "Id: " << medicamento.id << endl;
-    cout << "Nome Comercial: " << medicamento.nome_comercial << endl;
-    cout << "Principio Ativo: " << medicamento.principio_ativo << endl;
-    cout << "Dosagem: " << medicamento.dosagem << " mg"<<  endl;
-    cout << "Laboratorio: " << medicamento.laboratorio << endl;
-
-}
-void Ordena(Medicamento *ptVetMedicamento, int capac, int opcOrdena){
-    for(int i=1; i<capac; i++){
-        Medicamento valor_pivo = ptVetMedicamento[i];
-        int j = i-1;
-           if(opcOrdena == 1){
-            while((j>=0) and (valor_pivo.id <ptVetMedicamento[j].id)){
-                ptVetMedicamento[j+1] = ptVetMedicamento[j];
-                j--;
-            }
-                ptVetMedicamento[j+1] = valor_pivo;
-        }
-           else if(opcOrdena == 2){
-                  while((j>=0) and (valor_pivo.dosagem <ptVetMedicamento[j].dosagem)){
-                    ptVetMedicamento[j+1] = ptVetMedicamento[j];
-                    j--;
-                }
-        }
-            ptVetMedicamento[j+1] = valor_pivo;
-   }
-}
-int buscaBinaria(Medicamento *ptMedicamentos, int inicio, int fim, int remover){
-    if(inicio > fim){
-        return -1;
-    }
-    int medio = (inicio+fim)/2;
-
-    if(remover == ptMedicamentos[medio].id){
-        return medio;
-    }
-    else if(ptMedicamentos[medio].id < remover){
-        return buscaBinaria(ptMedicamentos, medio+1, fim, remover);
-    }
-    else{
-        return buscaBinaria(ptMedicamentos, 0, medio-1, remover);
-    }
-}
-
-void Remover_Medicamento(Medicamento* ptMedicamento, int tam, int remover){
-
-        ptMedicamento[remover].mostrar = false;
-
-}
-
-
-
-void Receber_Medicamento(Medicamento &medicamento){
+void Receber_Medicamento(Medicamento &medicamento, unsigned id){
 
   medicamento.mostrar = true;
-
-  cout << "Insira o id do remédio: ";
-  cin >> medicamento.id;
+  medicamento.id = id;
 
   cin.ignore();
   cout << "Insira o nome comercial do medicamento: ";
@@ -104,25 +47,197 @@ void Copiar_Medicamento(Medicamento *destino, Medicamento &origem){
 
 }
 
-void Salvar_Medicamentos(Medicamento vet_medicamentos[], tamanho){
+void Remover_Medicamento(Medicamento* ptMedicamento, int tam, int remover){
+
+  ptMedicamento[remover].mostrar = false;
+
+}
+
+
+void Ler_Medicamento(Medicamento medicamento){
+
+    cout << "Id: " << medicamento.id << endl;
+    cout << "Nome Comercial: " << medicamento.nome_comercial << endl;
+    cout << "Principio Ativo: " << medicamento.principio_ativo << endl;
+    cout << "Dosagem: " << medicamento.dosagem << " mg"<<  endl;
+    cout << "Laboratorio: " << medicamento.laboratorio << endl;
+
+}
+
+void Salvar_Medicamentos(Medicamento vet_medicamentos[], int tamanho){
+
+  ofstream arquivo_medicamentos_escrever("medicamentos.csv");
+  arquivo_medicamentos_escrever << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""<<endl;
+
+  for(int i=0; i<tamanho; i++){
+
+    if(vet_medicamentos[i].mostrar == true){
+      arquivo_medicamentos_escrever << vet_medicamentos[i].id << ','
+        << '"' << vet_medicamentos[i].nome_comercial
+        << '"' << "," << '"' << vet_medicamentos[i].principio_ativo<<'"'
+        <<','<< vet_medicamentos[i].dosagem <<','
+        << '"' << vet_medicamentos[i].laboratorio << '"'<<endl;
+    }
+
+  }
+
+}
+
+void Intercala_Nome(Medicamento vet_medicamentos[], unsigned inicio, unsigned meio, unsigned fim){
   
-  arquivo_medicamentos << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""
+  unsigned tamanho = fim - inicio + 1;
+  Medicamento *vet_aux = new Medicamento[tamanho];
+  unsigned i = inicio, j = meio + 1, k = 0;
+  while(i<=meio && j<=fim){
 
-            for(int i=0; i<tamanho; i++){
-            if(vet_medicamentos[i].mostrar == true){
-              arquivo_medicamentos << vet_medicamentos[i].id << ','
-              << '"' << vet_medicamentos[i].nome_comercial
-              << '"' << "," << '"' << vet_medicamentos[i].principio_ativo<<'"'
-              <<','<< vet_medicamentos[i].dosagem <<','
-              << '"' << vet_medicamentos[i].laboratorio << '"';
-            }
+    if(vet_medicamentos[i].nome_comercial > vet_medicamentos[j].nome_comercial){
 
-            }
+      vet_aux[k] = vet_medicamentos[j];
+      j++;
 
+    }else if(vet_medicamentos[i].nome_comercial < vet_medicamentos[j].nome_comercial){
+
+      vet_aux[k] = vet_medicamentos[i];
+      i++;
+
+    }else if(vet_medicamentos[i].nome_comercial == vet_medicamentos[j].nome_comercial){
+
+      if(vet_medicamentos[i].id > vet_medicamentos[j].id){
+        vet_aux[k] = vet_medicamentos[j];
+        j++;
+      }else {
+        vet_aux[k] = vet_medicamentos[i];
+        i++;
+      }
+
+    }
+    k++;
+
+  }
+
+  while(i <= meio){
+    vet_aux[k] = vet_medicamentos[i];
+    i++;
+    k++;
+  }
+
+  while(j <= fim){
+    vet_aux[k] = vet_medicamentos[j];
+    j++;
+    k++;
+  }
+
+  for(unsigned index = 0; index < tamanho; index++){
+
+    vet_medicamentos[inicio + index] = vet_aux[index];
+
+  }
+  
+
+  delete[] vet_aux;
+
+}
+void Intercala_Id(Medicamento vet_medicamentos[], unsigned inicio, unsigned meio, unsigned fim){
+
+  unsigned tamanho = fim - inicio + 1;
+  Medicamento *vet_aux = new Medicamento[tamanho];
+  unsigned i = inicio, j = meio + 1, k = 0;
+  while(i<=meio && j<=fim){
+
+    if(vet_medicamentos[i].id > vet_medicamentos[j].id){
+
+      vet_aux[k] = vet_medicamentos[j];
+      j++;
+
+    }else{
+
+      vet_aux[k] = vet_medicamentos[i];
+      i++;
+
+    }    
+    k++;
+
+  }
+
+  while(i <= meio){
+    vet_aux[k] = vet_medicamentos[i];
+    i++;
+    k++;
+  }
+
+  while(j <= fim){
+    vet_aux[k] = vet_medicamentos[j];
+    j++;
+    k++;
+  }
+
+  for(unsigned index = 0; index < tamanho; index++){
+
+    vet_medicamentos[inicio + index] = vet_aux[index];
+
+  }
+  
+
+  delete[] vet_aux;
 
 
 }
 
+void Merge_Sort(Medicamento vet_medicamentos[], unsigned inicio, unsigned fim, int opc_ordena){
+  
+  
+  if(inicio != fim){
+
+    unsigned meio = (inicio + fim)/2;
+    
+    Merge_Sort(vet_medicamentos, inicio, meio, opc_ordena);
+    Merge_Sort(vet_medicamentos, meio+1, fim, opc_ordena);
+
+    if(opc_ordena == 1)
+      Intercala_Id(vet_medicamentos, inicio, meio, fim);
+    else
+      Intercala_Nome(vet_medicamentos, inicio, meio, fim);
+
+  }
+
+
+}
+
+int Busca_Binaria_Nome(Medicamento *vet_medicamentos, int inicio, int fim, string valor_buscado){
+    if(inicio > fim){
+        return -1;
+    }
+    
+    int medio = (inicio+fim)/2;
+
+    if(valor_buscado == vet_medicamentos[medio].nome_comercial){
+        return medio;
+    }
+    else if(vet_medicamentos[medio].nome_comercial < valor_buscado){
+        return Busca_Binaria_Nome(vet_medicamentos, medio+1, fim, valor_buscado);
+    }
+    else{
+        return Busca_Binaria_Nome(vet_medicamentos, 0, medio-1, valor_buscado);
+    }
+}
+
+int Busca_Binaria_Id(Medicamento *vet_medicamentos, int inicio, int fim, int valor_buscado){
+    if(inicio > fim){
+        return -1;
+    }
+    
+    int medio = (inicio+fim)/2;
+
+    if(valor_buscado == vet_medicamentos[medio].id){
+        return medio;
+    }
+    else if(vet_medicamentos[medio].id < valor_buscado){
+        return Busca_Binaria_Id(vet_medicamentos, medio+1, fim, valor_buscado);
+    }
+    else{
+        return Busca_Binaria_Id(vet_medicamentos, 0, medio-1, valor_buscado);
+    }
+}
 
 int main(){
 
@@ -133,33 +248,33 @@ int main(){
     }
     else{
 
-      char letra;
-      string linha;
+      char letra_lixo;
+      string linha_lixo;
 
       int capacidade = 35;
       int tamanho = 0;
 
 
-      getline(arquivo_medicamentos, linha);
+      getline(arquivo_medicamentos, linha_lixo);
 
       Medicamento *vet_medicamentos = new Medicamento[capacidade];
 
       int j = 0;
 
       while(arquivo_medicamentos >> vet_medicamentos[j].id){
-        arquivo_medicamentos >> letra >> letra;
+        arquivo_medicamentos >> letra_lixo >> letra_lixo;
 
         getline(arquivo_medicamentos, vet_medicamentos[j].nome_comercial, '"');
 
-        arquivo_medicamentos >> letra >> letra;
+        arquivo_medicamentos >> letra_lixo >> letra_lixo;
 
         getline(arquivo_medicamentos, vet_medicamentos[j].principio_ativo, '"');
 
-        arquivo_medicamentos >> letra;
+        arquivo_medicamentos >> letra_lixo;
 
         arquivo_medicamentos >> vet_medicamentos[j].dosagem;
 
-        arquivo_medicamentos >> letra >> letra;
+        arquivo_medicamentos >> letra_lixo >> letra_lixo;
 
         getline(arquivo_medicamentos, vet_medicamentos[j].laboratorio, '"');
 
@@ -204,63 +319,122 @@ int main(){
         switch(opcao){
           case 1:{
 
-            Receber_Medicamento(vet_medicamentos[j]);
+            char prosseguir;
+            cout << "Ao inserir um elemento o vetor será ordenado de acordo com o ID!" << endl;
+            cout << "Deseja prosseguir (s/N)? ";
+            cin >> prosseguir;
 
-            j++;
-            tamanho++;
+            if(prosseguir == 's'){
+            
+              Merge_Sort(vet_medicamentos, 0, tamanho-1, 1);
 
-            if (tamanho >= capacidade){
-              capacidade += 5;
+              Receber_Medicamento(vet_medicamentos[j], vet_medicamentos[j-1].id + 1);
 
-              Medicamento *vet_temp = new Medicamento[capacidade];
+              j++;
+              tamanho++;
 
-              for(int i=0; i<(capacidade-5); i++){
+              if (tamanho >= capacidade){
+                capacidade += 5;
 
-                Copiar_Medicamento(&vet_temp[i], vet_medicamentos[i]);
+                Medicamento *vet_temp = new Medicamento[capacidade];
+
+                for(int i=0; i<(capacidade-5); i++){
+
+                  Copiar_Medicamento(&vet_temp[i], vet_medicamentos[i]);
+
+                }
+
+                delete []vet_medicamentos;
+                vet_medicamentos = vet_temp;
 
               }
 
-              delete []vet_medicamentos;
-              vet_medicamentos = vet_temp;
-
+              cout << "Medicamento inserido com sucesso!" << endl;
+              cout << endl;
             }
-
-            cout << "Medicamento inserido com sucesso!" << endl;
-            cout << endl;
 
           }break;
 
-          case 2:
-            int opcOrdena;
-            cout<<"Escolha a forma de ordenar para a busca binaria"<<endl;
-            cout<< "1- Por ID \n" << "2- Por dosagem" <<endl;
-            cin>>opcOrdena;
+          case 2:{
 
-            while(opcOrdena != 1 and opcOrdena!= 2){
+            int opc_ordena;
+            cout<<"Opções para buscar o elemento para remove-lo, os medicamentos serão ordenados com base na sua opção!"<<endl;
+            cout<<"1- Por ID \n" << "2- Pelo nome comercial" <<endl;
+            cout<<"Insira uma opção: ";
+            cin>>opc_ordena;
+
+            while(opc_ordena != 1 and opc_ordena!= 2){
                 cout<<"ENTRADA INVALIDA! DIGITE NOVAMENTE"<<endl;
-                 cin>>opcOrdena;
+                cin>>opc_ordena;
             }
-            Ordena(vet_medicamentos, capacidade, opcOrdena);
 
-            int opcRemover, posicaoRemover;
-            if(opcOrdena == 1){
-                cout<< "ID do medicamento a ser removido";
+            Merge_Sort(vet_medicamentos, 0, tamanho-1, opc_ordena);
 
+            int posicao_remover;
+
+            if(opc_ordena == 1){
+
+                int medicamento_remover;
+                cout<< "ID do medicamento a ser removido: ";
+                cin >> medicamento_remover;
+                posicao_remover = Busca_Binaria_Id(vet_medicamentos, 0, capacidade, medicamento_remover);
+
+            } else{
+
+                string medicamento_remover;
+                cout<< "Nome comercial do medicamento a ser removido: ";
+                cin.ignore();
+                getline(cin, medicamento_remover);
+                posicao_remover = Busca_Binaria_Nome(vet_medicamentos, 0, capacidade, medicamento_remover);
             }
-            else{
-                cout<< "Dosagem do medicamento a ser removido";
+            if(posicao_remover != -1){
+              tamanho--;
+              Remover_Medicamento(vet_medicamentos, capacidade, posicao_remover);
+            }else{
+              cout << "Não há nenhum elemento com o parametro no qual você quer deletar"<< endl;
             }
-                cin>>opcRemover;
 
-                posicaoRemover = buscaBinaria(vet_medicamentos, 0, capacidade, opcRemover);
+          }break;
 
-                Remover_Medicamento(vet_medicamentos, capacidade, posicaoRemover);
+          case 3:{
+            int opc_ordena;
+            cout<<"Opções para buscar o elemento, os medicamentos serão ordenados com base na sua escolha!"<<endl;
+            cout<<"1- Por ID \n" << "2- Pelo nome comercial" <<endl;
+            cout<<"Insira uma opção: ";
+            cin>>opc_ordena;
 
-            break;
+            while(opc_ordena != 1 and opc_ordena!= 2){
+              cout<<"ENTRADA INVALIDA! DIGITE NOVAMENTE"<<endl;
+              cin>>opc_ordena;
+            }
 
-          case 3:
-            cout << "Opção em desenvolvimento" << endl;
-            break;
+            Merge_Sort(vet_medicamentos, 0, tamanho-1, opc_ordena);
+
+            int posicao_procurar;
+
+            if(opc_ordena == 1){
+
+              int medicamento_procurar;
+              cout<< "ID do medicamento a ser procurado: ";
+              cin >> medicamento_procurar;
+              posicao_procurar = Busca_Binaria_Id(vet_medicamentos, 0, capacidade, medicamento_procurar);
+
+            } else{
+
+                string medicamento_remover;
+                cout<< "Nome comercial do medicamento a ser procurado: ";
+                cin.ignore();
+                getline(cin, medicamento_remover);
+                posicao_procurar = Busca_Binaria_Nome(vet_medicamentos, 0, capacidade, medicamento_remover);
+            }
+            if(posicao_procurar != -1){
+                cout << endl;
+                Ler_Medicamento(vet_medicamentos[posicao_procurar]);
+            }else{
+              cout << "Não há nenhum elemento com esse parametro"<< endl;
+            }
+
+          }break;
 
           case 4:{
 
@@ -299,20 +473,9 @@ int main(){
 
           case 5:
             
-            arquivo_medicamentos << "#id,\"nome_comercial\",\"principio_ativo\",dosagem(mg),\"laboratorio\""
+            Salvar_Medicamentos(vet_medicamentos, tamanho);
 
-            for(int i=0; i<tamanho; i++){
-            if(vet_medicamentos[i].mostrar == true){
-              arquivo_medicamentos << vet_medicamentos[i].id << ','
-              << '"' << vet_medicamentos[i].nome_comercial
-              << '"' << "," << '"' << vet_medicamentos[i].principio_ativo<<'"'
-              <<','<< vet_medicamentos[i].dosagem <<','
-              << '"' << vet_medicamentos[i].laboratorio << '"';
-            }
-
-            }
-
-            break;
+          break;
 
           case 6:
             char salvar;
@@ -320,7 +483,7 @@ int main(){
             cin >> salvar;
 
             if (salvar == 's'){
-              cout << "Opção em desenvolvimento" << endl;
+              Salvar_Medicamentos(vet_medicamentos, tamanho);
             }
 
             cout << "Saindo..." << endl;
